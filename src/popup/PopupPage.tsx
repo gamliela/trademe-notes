@@ -12,7 +12,7 @@ class PopupPage extends Component<PopupPageProps> {
   render() {
     return (
       <div>
-        <h1>Popup</h1>
+        <h1>Trademe Notes</h1>
         <p>Some stuff here...</p>
       </div>
     );

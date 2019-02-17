@@ -7,7 +7,7 @@ class OptionsPage extends Component {
   render() {
     return (
       <div>
-        <h1>Options</h1>
+        <h1>Trademe Notes Options</h1>
         <p>Some options here...</p>
       </div>
     );
