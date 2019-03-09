@@ -11,7 +11,8 @@ const config = {
   entry: {
     background: path.join(srcPath, 'background', 'index.ts'),
     options: path.join(srcPath, 'options', 'index.tsx'),
-    popup: path.join(srcPath, 'popup', 'index.tsx')
+    popup: path.join(srcPath, 'popup', 'index.tsx'),
+    trademe_nz_content_script: path.join(srcPath, 'content_scripts', 'trademe_nz_index.ts')
   },
   output: {
     filename: '[name].js',
@@ -57,7 +58,7 @@ const config = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: path.join(srcPath, 'manifest.json') }
+      {from: path.join(srcPath, 'manifest.json')}
     ]),
     new HtmlWebpackPlugin({
       template: path.join(srcPath, 'options', 'index.html'),

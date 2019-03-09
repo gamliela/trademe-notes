@@ -16,5 +16,15 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.trademe.nz/*"
+      ],
+      "js": [
+        "trademe_nz_content_script.js"
+      ]
+    }
+  ],
   "manifest_version": 2
 }
