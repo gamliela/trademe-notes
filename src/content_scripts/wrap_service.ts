@@ -1,9 +1,23 @@
 import {getWrapperTargets} from "./trademe_dom";
 import style from "./style.scss";
 
+function buildStateButton(): Element {
+  const button = document.createElement('a');
+  button.className = 'button is-small';
+  const iconContainer = document.createElement('span');
+  iconContainer.className = 'icon is-small';
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-thumbs-up';
+  button.insertAdjacentElement('afterbegin', iconContainer);
+  iconContainer.insertAdjacentElement('afterbegin', icon);
+  return button;
+}
+
 function buildElementWrapper(): Element {
   const elementWrapper = document.createElement('div');
   elementWrapper.className = style.ElementWrapper;
+  const stateButton = buildStateButton();
+  elementWrapper.insertAdjacentElement('afterbegin', stateButton);
   return elementWrapper;
 }
 
