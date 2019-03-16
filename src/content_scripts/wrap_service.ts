@@ -1,4 +1,4 @@
-import {getWrapperTargets} from "./trademe_dom";
+import {getWrapperTargets, Target} from "./trademe_dom";
 import style from "./style.scss";
 
 function buildStateButton(): Element {
@@ -21,28 +21,28 @@ function buildElementWrapper(): Element {
   return elementWrapper;
 }
 
-function wrapElement(targetElement: Element): void {
-  targetElement.insertAdjacentElement('afterbegin', buildElementWrapper());
+function wrapTarget(target: Target): void {
+  target.rootElement.insertAdjacentElement('afterbegin', buildElementWrapper());
 }
 
-function unwrapElement(element: Element): void {
-  element.firstElementChild.remove();
+function unwrapTarget(target: Target): void {
+  target.rootElement.firstElementChild.remove();
 }
 
-function detectWrapStateForElement(element: Element): boolean {
-  return element.firstElementChild && (element.firstElementChild.className == style.ElementWrapper);
+function detectWrapStateForTarget(target: Target): boolean {
+  return target.rootElement.firstElementChild && (target.rootElement.firstElementChild.className == style.ElementWrapper);
 }
 
-function toggleWrapStateForElement(element: Element, state: boolean) {
-  const currentState = detectWrapStateForElement(element);
+function toggleWrapStateForTarget(target: Target, state: boolean) {
+  const currentState = detectWrapStateForTarget(target);
   if (state && !currentState)
-    wrapElement(element);
+    wrapTarget(target);
   if (!state && currentState)
-    unwrapElement(element);
+    unwrapTarget(target);
 }
 
 function toggleWrapState(state: boolean) {
-  getWrapperTargets().forEach(element => toggleWrapStateForElement(element, state));
+  getWrapperTargets().forEach(target => toggleWrapStateForTarget(target, state));
 }
 
 function keyboardEventHandler(event: KeyboardEvent) {
