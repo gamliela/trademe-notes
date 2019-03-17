@@ -1,28 +1,60 @@
-import {getWrapperTargets, Target} from "./trademe_dom";
+import {getWrapperTargets} from "./trademe_dom";
+import {newStatefulTarget, StatefulTarget, Target, TargetState} from "./target";
 import style from "./style.scss";
 
-function buildStateButton(): Element {
-  const button = document.createElement('a');
-  button.className = 'button is-small';
+const STATE_ICONS = {
+  "yes": "fa-thumbs-up",
+  "no": "fa-thumbs-down",
+  "undetermined": "fa-eraser"
+};
+
+function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wrapper: Element): Element {
+
+  function stateButtonClickHandler() {
+    statefulTarget
+      .updateData({state: state})
+      .then(() => {
+        wrapper.setAttribute("data-state", state);
+      });
+  }
+
+  const icon = document.createElement('i');
+  icon.className = `fas ${STATE_ICONS[state]}`;
+
   const iconContainer = document.createElement('span');
   iconContainer.className = 'icon is-small';
-  const icon = document.createElement('i');
-  icon.className = 'fas fa-thumbs-up';
-  button.insertAdjacentElement('afterbegin', iconContainer);
   iconContainer.insertAdjacentElement('afterbegin', icon);
+
+  const button = document.createElement('a');
+  button.className = 'button is-small';
+  button.insertAdjacentElement('afterbegin', iconContainer);
+  button.addEventListener('click', stateButtonClickHandler);
+
   return button;
 }
 
-function buildElementWrapper(): Element {
-  const elementWrapper = document.createElement('div');
-  elementWrapper.className = style.ElementWrapper;
-  const stateButton = buildStateButton();
-  elementWrapper.insertAdjacentElement('afterbegin', stateButton);
-  return elementWrapper;
+async function buildTargetWrapper(target: Target): Promise<Element> {
+  const statefulTarget = await newStatefulTarget(target);
+  const wrapper = document.createElement('div');
+
+  const stateYesButton = buildStateButton("yes", statefulTarget, wrapper);
+  const stateNoButton = buildStateButton("no", statefulTarget, wrapper);
+  const stateUndeterminedButton = buildStateButton("undetermined", statefulTarget, wrapper);
+
+  wrapper.setAttribute("data-state", statefulTarget.data.state);
+  wrapper.className = style.ElementWrapper;
+  wrapper.insertAdjacentElement('afterbegin', stateUndeterminedButton);
+  wrapper.insertAdjacentElement('afterbegin', stateNoButton);
+  wrapper.insertAdjacentElement('afterbegin', stateYesButton);
+
+  return wrapper;
 }
 
 function wrapTarget(target: Target): void {
-  target.rootElement.insertAdjacentElement('afterbegin', buildElementWrapper());
+  buildTargetWrapper(target)
+    .then((element) => {
+      target.rootElement.insertAdjacentElement('afterbegin', element);
+    });
 }
 
 function unwrapTarget(target: Target): void {

@@ -1,3 +1,7 @@
+$color-state-yes: rgb(0, 255, 0);
+$color-state-no: rgb(255, 0, 0);
+$color-state-undetermined: rgb(128, 128, 128);
+
 .ElementWrapper {
   position: absolute;
   width: 100%;
@@ -5,9 +9,29 @@
   top: 0;
   left: 0;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: white; // if appears then something went wrong
 
   :global i.fas.fa-thumbs-up {
-    color: green;
+    color: $color-state-yes;
+  }
+
+  :global i.fas.fa-thumbs-down {
+    color: $color-state-no;
+  }
+
+  :global i.fas.fa-thumbs-eraser {
+    color: $color-state-undetermined;
+  }
+
+  &[data-state="yes"] {
+    background-color: rgba($color-state-yes, 0.5);
+  }
+
+  &[data-state="no"] {
+    background-color: rgba($color-state-no, 0.5);
+  }
+
+  &[data-state="undetermined"] {
+    background-color: rgba($color-state-undetermined, 0.5);
   }
 }

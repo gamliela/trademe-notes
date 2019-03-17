@@ -1,9 +1,6 @@
-type Target = {
-  id: string,
-  rootElement: HTMLElement
-}
+import {Target} from "./target";
 
-function extractTargetFromLink(link: HTMLLinkElement) : Target {
+function extractTargetFromLink(link: HTMLLinkElement): Target {
   return {
     id: link.href.match("/listing/(\\d+)")[1],
     rootElement: link.parentElement.parentElement
@@ -18,10 +15,18 @@ function raiseTargetError(s: string, target: Target): void {
 function validateTargets(targets: Array<Target>): void {
   const ids = {};
   targets.forEach(target => {
-    if (!target.id) raiseTargetError("target without id", target);
-    if (!target.rootElement) raiseTargetError("target without wrapper", target);
-    if (!/card__wrapper$/.test(target.rootElement.className)) raiseTargetError("invalid wrapper", target);
-    if (ids[target.id]) raiseTargetError("duplicate target", target);
+    if (!target.id) {
+      raiseTargetError("target without id", target);
+    }
+    if (!target.rootElement) {
+      raiseTargetError("target without wrapper", target);
+    }
+    if (!Array.from(target.rootElement.classList).some(className => /card__wrapper$/.test(className))) {
+      raiseTargetError("invalid wrapper", target);
+    }
+    if (ids[target.id]) {
+      raiseTargetError("duplicate target", target);
+    }
     ids[target.id] = true;
   });
 }
@@ -35,4 +40,4 @@ function getWrapperTargets(): Array<Target> {
   return allTargets;
 }
 
-export {Target, getWrapperTargets}
+export {getWrapperTargets}
