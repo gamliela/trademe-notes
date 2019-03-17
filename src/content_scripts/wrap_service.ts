@@ -9,7 +9,6 @@ const STATE_ICONS = {
 };
 
 function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wrapper: Element): Element {
-
   function stateButtonClickHandler() {
     statefulTarget
       .updateData({state: state})
@@ -33,6 +32,33 @@ function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wr
   return button;
 }
 
+function buildNotesInput(initialText: string, statefulTarget: StatefulTarget): Element {
+  function inputKeydownHandler(event: KeyboardEvent) {
+    if (!event.repeat && event.metaKey && !event.shiftKey && !event.altKey && !event.ctrlKey && (event.key == 's')) {
+      statefulTarget
+        .updateData({notes: input.value})
+        .then(() => {
+          input.setAttribute("data-changed", "false");
+        });
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }
+
+  function inputInputHandler() {
+    input.setAttribute("data-changed", "true");
+  }
+
+  const input = document.createElement('textarea');
+  input.value = statefulTarget.data.notes;
+  input.rows = 4;
+  input.setAttribute("data-changed", "false");
+  input.addEventListener('keydown', inputKeydownHandler);
+  input.addEventListener('input', inputInputHandler);
+
+  return input;
+}
+
 async function buildTargetWrapper(target: Target): Promise<Element> {
   const statefulTarget = await newStatefulTarget(target);
   const wrapper = document.createElement('div');
@@ -40,12 +66,17 @@ async function buildTargetWrapper(target: Target): Promise<Element> {
   const stateYesButton = buildStateButton("yes", statefulTarget, wrapper);
   const stateNoButton = buildStateButton("no", statefulTarget, wrapper);
   const stateUndeterminedButton = buildStateButton("undetermined", statefulTarget, wrapper);
+  const buttonsWrapper = document.createElement('div');
+  buttonsWrapper.insertAdjacentElement('beforeend', stateYesButton);
+  buttonsWrapper.insertAdjacentElement('beforeend', stateNoButton);
+  buttonsWrapper.insertAdjacentElement('beforeend', stateUndeterminedButton);
+
+  const notesInput = buildNotesInput(statefulTarget.data.notes, statefulTarget);
 
   wrapper.setAttribute("data-state", statefulTarget.data.state);
   wrapper.className = style.ElementWrapper;
-  wrapper.insertAdjacentElement('afterbegin', stateUndeterminedButton);
-  wrapper.insertAdjacentElement('afterbegin', stateNoButton);
-  wrapper.insertAdjacentElement('afterbegin', stateYesButton);
+  wrapper.insertAdjacentElement('beforeend', buttonsWrapper);
+  wrapper.insertAdjacentElement('beforeend', notesInput);
 
   return wrapper;
 }

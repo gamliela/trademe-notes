@@ -34,4 +34,12 @@ $color-state-undetermined: rgb(128, 128, 128);
   &[data-state="undetermined"] {
     background-color: rgba($color-state-undetermined, 0.5);
   }
+
+  textarea {
+    width: 100%;
+
+    &[data-changed="true"] {
+      color: cornflowerblue;
+    }
+  }
 }
