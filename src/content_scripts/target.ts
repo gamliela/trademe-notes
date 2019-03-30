@@ -23,17 +23,19 @@ const defaultTargetData = {
   notes: null
 };
 
-async function updateTargetData(id: string, data: TargetData, {...newPartialData}: Partial<TargetData>): Promise<void> {
-  return storageSetKey(id, {
-    ...data,
-    ...newPartialData
-  }).then(() => {
-    Object.assign(data, newPartialData);
-  });
-}
-
 async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
-  const data = await storageGetKey(target.id, defaultTargetData) as TargetData;
+  const data = {
+    ...await storageGetKey(target.id, defaultTargetData) as TargetData
+  };
+
+  function updateData(newPartialData: Partial<TargetData>): Promise<void> {
+    return storageSetKey(target.id, {
+      ...data,
+      ...newPartialData
+    }).then(() => {
+      Object.assign(data, newPartialData);
+    })
+  }
 
   return {
     ...target,
@@ -47,9 +49,7 @@ async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
       }
     },
 
-    updateData: (newPartialData: Partial<TargetData>) => {
-      return updateTargetData(target.id, data, newPartialData);
-    }
+    updateData
   };
 }
 
