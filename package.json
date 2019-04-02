@@ -5,10 +5,10 @@
   "author": "Alon Gamliel",
   "license": "MIT",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.7.2",
-    "bulma": "^0.7.4",
-    "mobx": "^5.9.0",
-    "mobx-react": "^5.4.3",
+    "@fortawesome/fontawesome-free": "5.7.2",
+    "bulma": "0.7.4",
+    "mobx": "5.9.0",
+    "mobx-react": "5.4.3",
     "react": "16.8.2",
     "react-dom": "16.8.2"
   },
