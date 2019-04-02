@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@fortawesome/fontawesome-free@^5.7.2":
+"@fortawesome/fontawesome-free@5.7.2":
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.7.2.tgz#1498c3eb78ee7c78c5488418707de90aaf58d5d7"
 
@@ -474,7 +474,7 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-bulma@^0.7.4:
+bulma@0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/bulma/-/bulma-0.7.4.tgz#7e74512e9118d9799021339e67e365ee0ac4f3f9"
 
@@ -2211,14 +2211,14 @@ mixin-object@^2.0.1:
   dependencies:
     minimist "0.0.8"
 
-mobx-react@^5.4.3:
+mobx-react@5.4.3:
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.4.3.tgz#6709b7dd89670c40e9815914ac2ca49cc02bfb47"
   dependencies:
     hoist-non-react-statics "^3.0.0"
     react-lifecycles-compat "^3.0.2"
 
-mobx@^5.9.0:
+mobx@5.9.0:
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.9.0.tgz#a08edd7132787f771409c9c33788a5df66ff7ce7"
 
