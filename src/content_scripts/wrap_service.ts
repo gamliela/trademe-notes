@@ -30,8 +30,16 @@ function toggleWrapState(state: boolean) {
   getWrapperTargets().forEach(target => toggleWrapStateForTarget(target, state));
 }
 
+function isWindows() {
+  return window.navigator && window.navigator.platform && (window.navigator.platform == "Win32") || (window.navigator.platform == "Win64")
+}
+
 function keyboardEventHandler(event: KeyboardEvent) {
-  if (!event.repeat && event.metaKey && !event.shiftKey && !event.altKey && !event.ctrlKey) {
+  const isRelevant = isWindows() ?
+    (!event.repeat && !event.metaKey && !event.shiftKey && event.altKey && !event.ctrlKey)
+    :
+    (!event.repeat && event.metaKey && !event.shiftKey && !event.altKey && !event.ctrlKey);
+  if (isRelevant) {
     if (event.key == 'F1')
       toggleWrapState(true);
     if (event.key == 'F2')
