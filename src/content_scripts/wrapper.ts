@@ -1,4 +1,5 @@
 import {newStatefulTarget, StatefulTarget, Target, TargetState} from "./target";
+import {isKeyboardEventRelevant} from "./wrap_service";
 import style from "./style.scss";
 
 const STATE_ICONS = {
@@ -33,7 +34,7 @@ function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wr
 
 function buildNotesInput(initialText: string, statefulTarget: StatefulTarget): Element {
   function inputKeydownHandler(event: KeyboardEvent) {
-    if (!event.repeat && event.metaKey && !event.shiftKey && !event.altKey && !event.ctrlKey && (event.key == 's')) {
+    if (isKeyboardEventRelevant(event) && (event.key == 's')) {
       statefulTarget
         .updateData({notes: input.value})
         .then(() => {

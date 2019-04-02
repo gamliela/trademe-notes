@@ -30,16 +30,17 @@ function toggleWrapState(state: boolean) {
   getWrapperTargets().forEach(target => toggleWrapStateForTarget(target, state));
 }
 
-function isWindows() {
-  return window.navigator && window.navigator.platform && (window.navigator.platform == "Win32") || (window.navigator.platform == "Win64")
-}
+const isWindows = window.navigator && window.navigator.platform && (window.navigator.platform == "Win32") || (window.navigator.platform == "Win64");
 
-function keyboardEventHandler(event: KeyboardEvent) {
-  const isRelevant = isWindows() ?
+function isKeyboardEventRelevant(event: KeyboardEvent) {
+  return isWindows ?
     (!event.repeat && !event.metaKey && !event.shiftKey && event.altKey && !event.ctrlKey)
     :
     (!event.repeat && event.metaKey && !event.shiftKey && !event.altKey && !event.ctrlKey);
-  if (isRelevant) {
+}
+
+function keyboardEventHandler(event: KeyboardEvent) {
+  if (isKeyboardEventRelevant(event)) {
     if (event.key == 'F1')
       toggleWrapState(true);
     if (event.key == 'F2')
@@ -51,4 +52,4 @@ function installWrappingKeyboardTrigger() {
   window.addEventListener("keydown", keyboardEventHandler);
 }
 
-export {installWrappingKeyboardTrigger}
+export {isKeyboardEventRelevant, installWrappingKeyboardTrigger}
