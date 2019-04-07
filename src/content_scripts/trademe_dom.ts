@@ -38,7 +38,7 @@ function validateTargets(targets: Array<Target>): void {
   });
 }
 
-function getWrapperTargets(): Array<Target> {
+function getWrapperListTargets(): Array<Target> {
   const searchLinkElements = document.getElementsByClassName("tm-property-search-card__link");
   const searchPremiumLinkElements = document.getElementsByClassName("tm-property-premium-listing-card__link");
   const watchlistLinkElements = document.getElementsByClassName("tm-property-watchlist-card__link");
@@ -47,7 +47,27 @@ function getWrapperTargets(): Array<Target> {
     ...searchPremiumLinkElements,
     ...watchlistLinkElements
   ]);
-  const allTargets = allLinkElements.map(extractTargetFromLink);
+  return allLinkElements.map(extractTargetFromLink);
+}
+
+function getWrapperPageTarget(): Array<Target> {
+  const pageTest = (/listing\/\d+$/.test(window.location.pathname));
+  const photosElement = document.querySelector<HTMLElement>('.tm-listing-photos__sticker-wrapper');
+  if (pageTest && photosElement) {
+    return [{
+      id: window.location.pathname.match(/listing\/(\d+)$/)[1],
+      rootElement: photosElement
+    }]
+  } else {
+    return [];
+  }
+}
+
+function getWrapperTargets(): Array<Target> {
+  const allTargets = [
+    ...getWrapperListTargets(),
+    ...getWrapperPageTarget()
+  ];
   validateTargets(allTargets);
   return allTargets;
 }
