@@ -6,7 +6,7 @@ function extractRootElementFrom(element: HTMLElement): HTMLElement {
   } else if (Array.from(element.classList).some(className => /card__wrapper$/.test(className))) {
     return element;
   } else {
-    return element.parentElement;
+    return extractRootElementFrom(element.parentElement);
   }
 }
 
