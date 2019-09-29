@@ -10,6 +10,11 @@ interface Target {
 type TargetData = {
   readonly state: TargetState;
   readonly notes?: string;
+  readonly rvPrice?: string;
+  readonly insightsPrice?: string;
+  readonly homesPrice?: string;
+  readonly beoPrice?: string;
+  readonly lastUpdated?: string;
 }
 
 interface StatefulTarget extends Target {
@@ -20,7 +25,12 @@ interface StatefulTarget extends Target {
 
 const defaultTargetData = {
   state: "undetermined",
-  notes: null
+  notes: null,
+  rvPrice: null,
+  insightsPrice: null,
+  homesPrice: null,
+  beoPrice: null,
+  lastUpdated: null
 };
 
 async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
@@ -46,6 +56,26 @@ async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
 
       get notes(): string {
         return data.notes;
+      },
+
+      get rvPrice(): string {
+        return data.rvPrice;
+      },
+
+      get insightsPrice(): string {
+        return data.insightsPrice;
+      },
+
+      get homesPrice(): string {
+        return data.homesPrice;
+      },
+
+      get beoPrice(): string {
+        return data.beoPrice;
+      },
+
+      get lastUpdated(): string {
+        return data.lastUpdated;
       }
     },
 

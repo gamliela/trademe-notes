@@ -37,9 +37,24 @@ $color-state-undetermined: rgb(128, 128, 128);
 
   textarea {
     width: 100%;
+  }
 
-    &[data-changed="true"] {
+  &[data-changed="true"] {
+    textarea, input {
       color: cornflowerblue;
+    }
+  }
+
+  .Toolbar {
+    background-color: white;
+
+    .Toolbar__label {
+      display: inline-block;
+      padding: 1px 5px;
+    }
+
+    input {
+      width: 8ch;
     }
   }
 }
