@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import {storageGetKey} from "../shared_modules/chrome_helper";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA-N9oYjNxeoei2hJ2kq5HHKDhyGWqCZcY",
@@ -16,12 +17,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Sign in
-const username = "";
-const password = "";
-firebase.auth().signInWithEmailAndPassword(username, password)
-  .then(() => {
-    console.error(`Successfully logged in with ${username}`);
-  })
-  .catch((error) => {
-    console.error(`Can't login with ${username}`, error);
-  });
+async function signin() {
+  const username = await storageGetKey("username", "");
+  const password = await storageGetKey("password", "");
+  await firebase.auth().signInWithEmailAndPassword(username, password);
+  console.log(`Successfully logged in with ${username}`);
+}
+
+signin().catch(error => console.log(error));
