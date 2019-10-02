@@ -1,8 +1,10 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import DocumentData = firebase.firestore.DocumentData;
 import {OptionsModel} from "../shared_modules/OptionsModel";
 
+// TODO: move to OptionsModel
 const firebaseConfig = {
   apiKey: "AIzaSyA-N9oYjNxeoei2hJ2kq5HHKDhyGWqCZcY",
   authDomain: "trademe-notes.firebaseapp.com",
@@ -13,10 +15,13 @@ const firebaseConfig = {
   appId: "1:1032199106234:web:14bca7151d534fa5765c83"
 };
 
+// TODO: move to OptionsModel
+const COLLECTION = "properties";
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const collection = firebase.firestore().collection(COLLECTION);
 
-// Sign in
 async function signin() {
   const options = new OptionsModel();
   await options.load();
@@ -24,4 +29,13 @@ async function signin() {
   console.log(`Successfully logged in with ${options.username}`);
 }
 
-signin().catch(error => console.log(error));
+async function getDocument<T>(id: string): Promise<T> {
+  const doc = await collection.doc(id).get();
+  return doc.data() as T;
+}
+
+function setDocument<T extends DocumentData>(id: string, data: T): Promise<void> {
+  return collection.doc(id).set(data);
+}
+
+export {signin, getDocument, setDocument};
