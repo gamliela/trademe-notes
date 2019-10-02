@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import {storageGetKey} from "../shared_modules/chrome_helper";
+import {OptionsModel} from "../shared_modules/OptionsModel";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA-N9oYjNxeoei2hJ2kq5HHKDhyGWqCZcY",
@@ -18,10 +18,10 @@ firebase.initializeApp(firebaseConfig);
 
 // Sign in
 async function signin() {
-  const username = await storageGetKey("username", "");
-  const password = await storageGetKey("password", "");
-  await firebase.auth().signInWithEmailAndPassword(username, password);
-  console.log(`Successfully logged in with ${username}`);
+  const options = new OptionsModel();
+  await options.load();
+  await firebase.auth().signInWithEmailAndPassword(options.username, options.password);
+  console.log(`Successfully logged in with ${options.username}`);
 }
 
 signin().catch(error => console.log(error));

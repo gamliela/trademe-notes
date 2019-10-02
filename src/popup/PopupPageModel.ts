@@ -1,4 +1,4 @@
-import {observable, action} from "mobx";
+import {observable} from "mobx";
 
 class PopupPageModel {
   @observable url: string;
@@ -8,7 +8,6 @@ class PopupPageModel {
     this.resolveUrl();
   }
 
-  @action.bound
   resolveUrl() {
     this.url = null;
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {

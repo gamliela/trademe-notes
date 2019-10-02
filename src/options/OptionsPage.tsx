@@ -1,11 +1,19 @@
 import * as React from "react";
 import {Component} from "react";
 import {observer} from "mobx-react";
-import {OptionsModel} from "./OptionsModel";
+import {OptionsModel} from "../shared_modules/OptionsModel";
 
 @observer
 class OptionsPage extends Component {
-  model = new OptionsModel();
+  model: OptionsModel;
+
+  constructor(props) {
+    super(props);
+    this.model = new OptionsModel();
+    this.model.load().catch(e => {
+      throw e;
+    });
+  }
 
   updateUsername(e) {
     this.model.username = e.target.value;
@@ -28,7 +36,7 @@ class OptionsPage extends Component {
             <input id="password" value={this.model.password} onChange={this.updatePassword.bind(this)}/>
           </fieldset>
           <p>
-            <button type="button" onClick={this.model.save}>Save</button>
+            <button type="button" onClick={this.model.save.bind(this.model)}>Save</button>
           </p>
         </form>
       </div>
