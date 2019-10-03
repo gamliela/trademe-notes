@@ -33,7 +33,7 @@ class OptionsPage extends Component {
             <label htmlFor="username">Username:</label>
             <input id="username" value={this.model.username} onChange={this.updateUsername.bind(this)}/>
             <label htmlFor="password">Password:</label>
-            <input id="password" value={this.model.password} onChange={this.updatePassword.bind(this)}/>
+            <input id="password" value={this.model.password} onChange={this.updatePassword.bind(this)} type="password"/>
           </fieldset>
           <p>
             <button type="button" onClick={this.model.save.bind(this.model)}>Save</button>
