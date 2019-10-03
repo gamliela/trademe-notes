@@ -80,7 +80,7 @@ function buildLastUpdatedSpan(statefulTarget: StatefulTarget) {
 function buildNotesInput(initialText: string, statefulTarget: StatefulTarget): HTMLTextAreaElement {
   const input = document.createElement('textarea');
   input.value = statefulTarget.data.notes;
-  input.rows = 4;
+  input.rows = 3;
 
   return input;
 }
