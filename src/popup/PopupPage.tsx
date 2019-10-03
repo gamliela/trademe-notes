@@ -13,7 +13,7 @@ class PopupPage extends Component<PopupPageProps> {
     return (
       <div>
         <h1>Trademe Notes</h1>
-        <p>Some stuff here...</p>
+        <p><a href="./options.html">Options</a></p>
       </div>
     );
   }
