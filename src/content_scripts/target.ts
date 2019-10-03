@@ -1,4 +1,4 @@
-import {storageGetKey, storageSetKey} from "../shared_modules/chrome_helper";
+import {GET_DOC_REQUEST, SET_DOC_REQUEST, sendMessage} from "../shared_modules/chrome_messaging";
 
 type TargetState = "yes" | "no" | "undetermined";
 
@@ -23,7 +23,7 @@ interface StatefulTarget extends Target {
   updateData(newPartialData: Partial<TargetData>): Promise<void>
 }
 
-const defaultTargetData = {
+const defaultTargetData: TargetData = {
   state: "undetermined",
   notes: null,
   rvPrice: null,
@@ -35,13 +35,16 @@ const defaultTargetData = {
 
 async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
   const data = {
-    ...await storageGetKey(target.id, defaultTargetData) as TargetData
+    ...(await sendMessage<string, TargetData>(GET_DOC_REQUEST, target.id)) || defaultTargetData
   };
 
   function updateData(newPartialData: Partial<TargetData>): Promise<void> {
-    return storageSetKey(target.id, {
-      ...data,
-      ...newPartialData
+    return sendMessage(SET_DOC_REQUEST, {
+      id: target.id,
+      data: {
+        ...data,
+        ...newPartialData
+      }
     }).then(() => {
       Object.assign(data, newPartialData);
     })

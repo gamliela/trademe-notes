@@ -1,5 +1,5 @@
 import {observable} from "mobx";
-import {storageGetKey, storageSetKey} from "./chrome_helper";
+import {storageGetKey, storageSetKey} from "./chrome_storage";
 
 class OptionsModel {
   @observable username: string = "";
