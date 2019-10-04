@@ -10,17 +10,7 @@ class OptionsPage extends Component {
   constructor(props) {
     super(props);
     this.model = new OptionsModel();
-    this.model.load().catch(e => {
-      throw e;
-    });
-  }
-
-  updateUsername(e) {
-    this.model.username = e.target.value;
-  }
-
-  updatePassword(e) {
-    this.model.password = e.target.value;
+    this.model.load();
   }
 
   render() {
@@ -29,11 +19,19 @@ class OptionsPage extends Component {
         <h1>Trademe Notes Options</h1>
         <form>
           <fieldset>
-            <legend>Firebase Auth</legend>
+            <legend>Firebase Configuration</legend>
             <label htmlFor="username">Username:</label>
-            <input id="username" value={this.model.username} onChange={this.updateUsername.bind(this)}/>
+            <input id="username" value={this.model.username} onChange={(e) => this.model.username = e.target.value}/>
             <label htmlFor="password">Password:</label>
-            <input id="password" value={this.model.password} onChange={this.updatePassword.bind(this)} type="password"/>
+            <input id="password" value={this.model.password} onChange={(e) => this.model.password = e.target.value}
+                   type="password"/>
+            <label htmlFor="apiKey">API Key:</label>
+            <input id="apiKey" value={this.model.apiKey} onChange={(e) => this.model.apiKey = e.target.value}/>
+            <label htmlFor="projectId">Project ID:</label>
+            <input id="projectId" value={this.model.projectId} onChange={(e) => this.model.projectId = e.target.value}/>
+            <label htmlFor="collection">Collection:</label>
+            <input id="collection" value={this.model.collection}
+                   onChange={(e) => this.model.collection = e.target.value}/>
           </fieldset>
           <p>
             <button type="button" onClick={this.model.save.bind(this.model)}>Save</button>

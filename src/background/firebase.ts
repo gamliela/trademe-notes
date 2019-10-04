@@ -11,29 +11,35 @@ import {
   SET_DOC_REQUEST
 } from "../shared_modules/chrome_messaging";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA-N9oYjNxeoei2hJ2kq5HHKDhyGWqCZcY",
-  projectId: "trademe-notes",
-};
-
-const COLLECTION = "properties";
-
-firebase.initializeApp(firebaseConfig);
-const collection = firebase.firestore().collection(COLLECTION);
+let collection = null;
 
 async function signin() {
   const options = new OptionsModel();
   await options.load();
+
+  firebase.initializeApp({
+    apiKey: options.apiKey,
+    projectId: options.projectId
+  });
+  collection = firebase.firestore().collection(options.collection);
   await firebase.auth().signInWithEmailAndPassword(options.username, options.password);
   console.log(`Successfully logged in with ${options.username}`);
 }
 
+function assertConnection() {
+  if (!collection) {
+    throw new Error("Firebase is not connected");
+  }
+}
+
 async function getDocument<T>(id: string): Promise<T> {
+  assertConnection();
   const doc = await collection.doc(id).get();
   return doc.data() as T;
 }
 
 function setDocument<T extends DocumentData>(id: string, data: T): Promise<void> {
+  assertConnection();
   return collection.doc(id).set(data);
 }
 
