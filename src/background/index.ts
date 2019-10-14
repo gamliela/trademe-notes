@@ -3,4 +3,4 @@ import {signin} from "./firebase";
 
 console.log('Trademe Notes Loaded!');
 
-signin();
+signin().catch(e => console.error(e));

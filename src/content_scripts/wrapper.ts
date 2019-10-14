@@ -14,6 +14,10 @@ function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wr
       .updateData({state: state})
       .then(() => {
         wrapper.setAttribute("data-state", state);
+      })
+      .catch((error) => {
+        window.alert("Problem with save! please try again.");
+        console.log(error);
       });
   }
 
@@ -99,6 +103,10 @@ async function buildTargetWrapper(target: Target): Promise<Element> {
         })
         .then(() => {
           this.setAttribute("data-changed", "false");
+        })
+        .catch((error) => {
+          window.alert("Problem with save! please try again.");
+          console.log(error);
         });
       wrapper.setAttribute("data-changed", "false");
       event.stopPropagation();

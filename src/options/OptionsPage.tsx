@@ -10,7 +10,7 @@ class OptionsPage extends Component {
   constructor(props) {
     super(props);
     this.model = new OptionsModel();
-    this.model.load();
+    this.model.load().catch(e => console.error(e));
   }
 
   render() {

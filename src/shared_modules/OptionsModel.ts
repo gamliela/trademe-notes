@@ -9,14 +9,12 @@ class OptionsModel {
   @observable collection: string = "";
 
   async load() {
-    await storageGetKey("options")
-      .then((value) => {
-        Object.assign(this, value)
-      })
+    const value = await storageGetKey("options");
+    Object.assign(this, value);
   }
 
   async save() {
-    await storageSetKey("options", toJS(this))
+    await storageSetKey("options", toJS(this));
   }
 }
 

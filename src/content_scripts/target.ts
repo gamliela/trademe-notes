@@ -38,16 +38,17 @@ async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
     ...(await sendMessage<string, TargetData>(GET_DOC_REQUEST, target.id)) || defaultTargetData
   };
 
-  function updateData(newPartialData: Partial<TargetData>): Promise<void> {
-    return sendMessage(SET_DOC_REQUEST, {
+  async function updateData(newPartialData: Partial<TargetData>): Promise<void> {
+    console.log("updateData: saving...", newPartialData);
+    await sendMessage(SET_DOC_REQUEST, {
       id: target.id,
       data: {
         ...data,
         ...newPartialData
       }
-    }).then(() => {
-      Object.assign(data, newPartialData);
-    })
+    });
+    Object.assign(data, newPartialData);
+    console.log(`updateData: success! (${target.id})`);
   }
 
   return {

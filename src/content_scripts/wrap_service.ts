@@ -7,6 +7,10 @@ function wrapTarget(target: Target): void {
   buildTargetWrapper(target)
     .then((element) => {
       target.rootElement.insertAdjacentElement('afterbegin', element);
+    })
+    .catch((error) => {
+      window.alert("Problem with fetching data! please try again.");
+      console.log(error);
     });
 }
 
@@ -18,16 +22,16 @@ function detectWrapStateForTarget(target: Target): boolean {
   return target.rootElement.firstElementChild && (target.rootElement.firstElementChild.className == style.ElementWrapper);
 }
 
-function toggleWrapStateForTarget(target: Target, state: boolean) {
-  const currentState = detectWrapStateForTarget(target);
-  if (state && !currentState)
-    wrapTarget(target);
-  if (!state && currentState)
+function toggleWrapStateForTarget(target: Target) {
+  if (detectWrapStateForTarget(target)) {
     unwrapTarget(target);
+  } else {
+    wrapTarget(target);
+  }
 }
 
-function toggleWrapState(state: boolean) {
-  getWrapperTargets().forEach(target => toggleWrapStateForTarget(target, state));
+function toggleWrapState() {
+  getWrapperTargets().forEach(target => toggleWrapStateForTarget(target));
 }
 
 const isWindows = window.navigator && window.navigator.platform && (window.navigator.platform == "Win32") || (window.navigator.platform == "Win64");
@@ -41,10 +45,9 @@ function isKeyboardEventRelevant(event: KeyboardEvent) {
 
 function keyboardEventHandler(event: KeyboardEvent) {
   if (isKeyboardEventRelevant(event)) {
-    if (event.key == 'F1')
-      toggleWrapState(true);
-    if (event.key == 'F2')
-      toggleWrapState(false);
+    if (event.key == 'F1') {
+      toggleWrapState();
+    }
   }
 }
 
