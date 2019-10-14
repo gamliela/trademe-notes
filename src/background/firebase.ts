@@ -11,8 +11,6 @@ import {
   SET_DOC_REQUEST
 } from "../shared_modules/chrome_messaging";
 
-let collection = null;
-
 async function signin() {
   const options = new OptionsModel();
   await options.load();
@@ -21,26 +19,23 @@ async function signin() {
     apiKey: options.apiKey,
     projectId: options.projectId
   });
-  collection = firebase.firestore().collection(options.collection);
+  const collection = firebase.firestore().collection(options.collection);
   await firebase.auth().signInWithEmailAndPassword(options.username, options.password);
   console.log(`Successfully logged in with ${options.username}`);
+  return {collection};
 }
 
-function assertConnection() {
-  if (!collection) {
-    throw new Error("Firebase is not connected");
-  }
-}
+const session = signin();
 
 async function getDocument<T>(id: string): Promise<T> {
-  assertConnection();
+  const {collection} = await session;
   const doc = await collection.doc(id).get();
   return doc.data() as T;
 }
 
-function setDocument<T extends DocumentData>(id: string, data: T): Promise<void> {
-  assertConnection();
-  return collection.doc(id).set(data);
+async function setDocument<T extends DocumentData>(id: string, data: T): Promise<void> {
+  const {collection} = await session;
+  await collection.doc(id).set(data);
 }
 
 chrome.runtime.onMessage.addListener(
@@ -48,17 +43,21 @@ chrome.runtime.onMessage.addListener(
     function asyncHandler(promise: Promise<any>) {
       promise
         .then((data) => {
+          console.log("Message response ok", data);
           sendResponse({msg: OK_RESPONSE, data});
         })
         .catch((error) => {
+          console.log("Message response error", error);
           sendResponse({msg: ERROR_RESPONSE, error});
         });
     }
 
     if (request.msg == GET_DOC_REQUEST) {
+      console.log("Message GET_DOC_REQUEST", request.data);
       asyncHandler(getDocument(request.data));
       return true;
     } else if (request.msg == SET_DOC_REQUEST) {
+      console.log("Message SET_DOC_REQUEST", request.data);
       asyncHandler(setDocument(request.data.id, request.data.data));
       return true;
     }
