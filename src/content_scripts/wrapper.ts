@@ -91,7 +91,7 @@ function buildNotesInput(initialText: string, statefulTarget: StatefulTarget): H
 
 async function buildTargetWrapper(target: Target): Promise<Element> {
   function saveHandler(event: KeyboardEvent) {
-    if (isKeyboardEventRelevant(event) && (event.key == 's')) {
+    if (isKeyboardEventRelevant(event) && ((event.key == 's') || (event.key == 'ד'))) {
       statefulTarget
         .updateData({
           rvPrice: (toolbar.querySelector(".price-field.rvPrice input") as HTMLInputElement).value,
