@@ -47,6 +47,7 @@ $color-state-undetermined: rgb(128, 128, 128);
 
   .Toolbar {
     background-color: white;
+    font-size: 0.8rem;
 
     .Toolbar__label {
       display: inline-block;
@@ -55,6 +56,11 @@ $color-state-undetermined: rgb(128, 128, 128);
 
     input {
       width: 8ch;
+      font-size: 0.6rem;
+    }
+
+    :global a.button {
+      font-size: 0.6rem;
     }
   }
 }
