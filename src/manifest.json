@@ -19,7 +19,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.trademe.nz/*"
+        "https://*.trademe.nz/*",
+        "https://*.trademe.co.nz/*"
       ],
       "js": [
         "trademe_nz_content_script.js"
