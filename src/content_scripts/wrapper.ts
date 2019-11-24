@@ -85,6 +85,7 @@ function buildLastUpdatedSpan(statefulTarget: StatefulTarget) {
 function buildNotesInput(initialText: string, statefulTarget: StatefulTarget): HTMLTextAreaElement {
   const input = document.createElement('textarea');
   input.value = statefulTarget.data.notes;
+  input.dir = "rtl";  // TODO: instead of hardcoding the value, read it from options
   input.rows = 3;
 
   return input;
