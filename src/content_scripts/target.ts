@@ -14,6 +14,7 @@ type TargetData = {
   readonly insightsPrice?: string;
   readonly homesPrice?: string;
   readonly beoPrice?: string;
+  readonly dueDate?: string;
   readonly lastUpdated?: string;
 }
 
@@ -30,6 +31,7 @@ const defaultTargetData: TargetData = {
   insightsPrice: null,
   homesPrice: null,
   beoPrice: null,
+  dueDate: null,
   lastUpdated: null
 };
 
@@ -76,6 +78,10 @@ async function newStatefulTarget(target: Target): Promise<StatefulTarget> {
 
       get beoPrice(): string {
         return data.beoPrice;
+      },
+
+      get dueDate(): string {
+        return data.dueDate;
       },
 
       get lastUpdated(): string {

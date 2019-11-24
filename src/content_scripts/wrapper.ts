@@ -36,12 +36,13 @@ function buildStateButton(state: TargetState, statefulTarget: StatefulTarget, wr
   return button;
 }
 
-function buildPriceField(priceProp: string, statefulTarget: StatefulTarget): Element {
-  const priceInputLabel = {
+function buildInputField(prop: string, statefulTarget: StatefulTarget): Element {
+  const inputLabel = {
     "rvPrice": "RV $",
-    "insightsPrice": "Trademe Insights $",
+    "insightsPrice": "Insights $",
     "homesPrice": "Homes $",
-    "beoPrice": "BEO $"
+    "beoPrice": "BEO $",
+    "dueDate": "Due"
   };
 
   const priceInputHref = {
@@ -49,22 +50,22 @@ function buildPriceField(priceProp: string, statefulTarget: StatefulTarget): Ele
     "homesPrice": "https://homes.co.nz/"
   };
 
-  const href = priceInputHref[priceProp];
+  const href = priceInputHref[prop];
   const labelSpan = document.createElement(href ? 'a' : 'span');
   if (href) {
     (labelSpan as HTMLAnchorElement).href = href;
     (labelSpan as HTMLAnchorElement).target = "_blank";
   }
-  labelSpan.innerText = priceInputLabel[priceProp];
+  labelSpan.innerText = inputLabel[prop];
   labelSpan.className = "is-small " + style.Toolbar__label;
 
   const input = document.createElement('input');
-  input.value = statefulTarget.data[priceProp] || '';
+  input.value = statefulTarget.data[prop] || '';
   input.className = "input is-small";
   input.setAttribute("data-changed", "false");
 
   const wrapper = document.createElement('span');
-  wrapper.className = "price-field " + priceProp;
+  wrapper.className = "input-field " + prop;
   wrapper.insertAdjacentElement('beforeend', labelSpan);
   wrapper.insertAdjacentElement('beforeend', input);
 
@@ -94,10 +95,11 @@ async function buildTargetWrapper(target: Target): Promise<Element> {
     if (isKeyboardEventRelevant(event) && ((event.key == 's') || (event.key == 'ד'))) {
       statefulTarget
         .updateData({
-          rvPrice: (toolbar.querySelector(".price-field.rvPrice input") as HTMLInputElement).value,
-          insightsPrice: (toolbar.querySelector(".price-field.insightsPrice input") as HTMLInputElement).value,
-          homesPrice: (toolbar.querySelector(".price-field.homesPrice input") as HTMLInputElement).value,
-          beoPrice: (toolbar.querySelector(".price-field.beoPrice input") as HTMLInputElement).value,
+          rvPrice: (toolbar.querySelector(".input-field.rvPrice input") as HTMLInputElement).value,
+          insightsPrice: (toolbar.querySelector(".input-field.insightsPrice input") as HTMLInputElement).value,
+          homesPrice: (toolbar.querySelector(".input-field.homesPrice input") as HTMLInputElement).value,
+          beoPrice: (toolbar.querySelector(".input-field.beoPrice input") as HTMLInputElement).value,
+          dueDate: (toolbar.querySelector(".input-field.dueDate input") as HTMLInputElement).value,
           notes: notesInput.value,
           lastUpdated: new Date().getTime() + "",
         })
@@ -126,16 +128,18 @@ async function buildTargetWrapper(target: Target): Promise<Element> {
   const stateYesButton = buildStateButton("yes", statefulTarget, wrapper);
   const stateNoButton = buildStateButton("no", statefulTarget, wrapper);
   const stateUndeterminedButton = buildStateButton("undetermined", statefulTarget, wrapper);
-  const priceRVField = buildPriceField("rvPrice", statefulTarget);
-  const priceInsightsField = buildPriceField("insightsPrice", statefulTarget);
-  const priceHomesField = buildPriceField("homesPrice", statefulTarget);
-  const priceBEOField = buildPriceField("beoPrice", statefulTarget);
+  const priceRVField = buildInputField("rvPrice", statefulTarget);
+  const priceInsightsField = buildInputField("insightsPrice", statefulTarget);
+  const priceHomesField = buildInputField("homesPrice", statefulTarget);
+  const priceBEOField = buildInputField("beoPrice", statefulTarget);
+  const dueDateField = buildInputField("dueDate", statefulTarget);
   const lastUpdatedSpan = buildLastUpdatedSpan(statefulTarget);
   const toolbar = document.createElement('div');
   toolbar.className = style.Toolbar;
   toolbar.insertAdjacentElement('beforeend', stateYesButton);
   toolbar.insertAdjacentElement('beforeend', stateNoButton);
   toolbar.insertAdjacentElement('beforeend', stateUndeterminedButton);
+  toolbar.insertAdjacentElement('beforeend', dueDateField);
   toolbar.insertAdjacentElement('beforeend', priceRVField);
   toolbar.insertAdjacentElement('beforeend', priceInsightsField);
   toolbar.insertAdjacentElement('beforeend', priceHomesField);
