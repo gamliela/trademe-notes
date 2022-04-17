@@ -52,7 +52,7 @@ function getWrapperListTargets(): Array<Target> {
 
 function getWrapperPageTarget(): Array<Target> {
   const pageTest = (/listing\/\d+$/.test(window.location.pathname));
-  const photosElement = document.querySelector<HTMLElement>('.tm-listing-photos__sticker-wrapper');
+  const photosElement = document.querySelector<HTMLElement>('tm-gallery-view');
   if (pageTest && photosElement) {
     return [{
       id: window.location.pathname.match(/listing\/(\d+)$/)[1],
